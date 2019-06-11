@@ -31,6 +31,7 @@ class Plansza
         Kierunek getKierunek();
         int SprawdzXPosLufy();
         int SprawdzYPosLufy();
+        bool sprawdzZakres(int x, int y);
         Kierunek zmienKier(Kierunek k);
         void ruchL();
         void ruchP();

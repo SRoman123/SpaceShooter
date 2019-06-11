@@ -48,6 +48,13 @@ Kierunek Plansza::getKierunek()
     return kier;
 }
 
+bool Plansza::sprawdzZakres(int x, int y)
+{
+    if(x < 0 || x > (szerokosc-1) || y < 0 || y > (wysokosc-1))
+        return false;
+    return true;
+}
+
 Kierunek Plansza::zmienKier(Kierunek k)
 {
     switch(k)
@@ -87,8 +94,8 @@ void Plansza::ruchL()
     int yPos = SprawdzYPosLufy();
     plansza[yPos][xPos].jestLufa = false;
     plansza[yPos][xPos-1].jestLufa = true;
-    plansza[yPos+1][xPos+1].jestLufa = false;
-    plansza[yPos+1][xPos-2].jestLufa = true;
+    plansza[yPos+1][xPos+1].jestStatek = false;
+    plansza[yPos+1][xPos-2].jestStatek = true;
 }
 
 void Plansza::ruchP()
@@ -97,8 +104,8 @@ void Plansza::ruchP()
     int yPos = SprawdzYPosLufy();
     plansza[yPos][xPos].jestLufa = false;
     plansza[yPos][xPos+1].jestLufa = true;
-    plansza[yPos+1][xPos-1].jestLufa = false;
-    plansza[yPos+1][xPos+2].jestLufa = true;
+    plansza[yPos+1][xPos-1].jestStatek = false;
+    plansza[yPos+1][xPos+2].jestStatek = true;
 }
 
 void Plansza::wyswietl()
@@ -123,6 +130,7 @@ void Plansza::wyswietl()
         }
         //std::cout<<std::endl;
     }
+    std::cout<<std::endl;
 }
 
 
