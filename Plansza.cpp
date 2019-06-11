@@ -1,4 +1,4 @@
-#include <Plansza.h>
+#include "../include/Plansza.h"
 #include <iostream>
 
 Plansza::Plansza(int szeroksc, int wysokosc, GameMode gameMode)
