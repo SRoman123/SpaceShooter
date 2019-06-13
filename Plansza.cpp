@@ -1,4 +1,4 @@
-#include "../include/Plansza.h"
+#include "Plansza.h"
 #include <iostream>
 
 Plansza::Plansza(int szeroksc, int wysokosc, GameMode gameMode)
@@ -92,6 +92,8 @@ void Plansza::ruchL()
 {
     int xPos = SprawdzXPosLufy();
     int yPos = SprawdzYPosLufy();
+    if(!sprawdzZakres(xPos-1,yPos))
+        return;
     plansza[yPos][xPos].jestLufa = false;
     plansza[yPos][xPos-1].jestLufa = true;
     plansza[yPos+1][xPos+1].jestStatek = false;
@@ -102,10 +104,31 @@ void Plansza::ruchP()
 {
     int xPos = SprawdzXPosLufy();
     int yPos = SprawdzYPosLufy();
+    if(!sprawdzZakres(xPos+1,yPos))
+        return;
     plansza[yPos][xPos].jestLufa = false;
     plansza[yPos][xPos+1].jestLufa = true;
     plansza[yPos+1][xPos-1].jestStatek = false;
     plansza[yPos+1][xPos+2].jestStatek = true;
+}
+
+void Plansza::ustawRakiete()
+{
+    int yPos=SprawdzYPosLufy();
+    int xPos=SprawdzXPosLufy();
+    plansza[yPos][xPos].jestRakieta = true;
+}
+
+void Plansza::strzelaj()
+{
+    int yPos=SprawdzYPosLufy();
+    int xPos=SprawdzXPosLufy()+1;
+    for(int i = SprawdzXPosLufy(); i>=0; --i)
+    {
+        plansza[yPos][i].jestRakieta = true;
+        plansza[yPos][xPos].jestRakieta = false;
+        xPos--;
+    }
 }
 
 void Plansza::wyswietl()
@@ -132,5 +155,3 @@ void Plansza::wyswietl()
     }
     std::cout<<std::endl;
 }
-
-

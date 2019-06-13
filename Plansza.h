@@ -35,6 +35,8 @@ class Plansza
         Kierunek zmienKier(Kierunek k);
         void ruchL();
         void ruchP();
+        void ustawRakiete();
+        void strzelaj();
 
         void wyswietl();
 
