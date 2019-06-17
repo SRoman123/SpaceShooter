@@ -1,5 +1,6 @@
 #include "Plansza.h"
 #include <iostream>
+#include <unistd.h>
 
 Plansza::Plansza(int szeroksc, int wysokosc, GameMode gameMode)
 {
@@ -88,6 +89,8 @@ int Plansza::SprawdzYPosLufy()
     return wysokosc-2;
 }
 
+
+
 void Plansza::ruchL()
 {
     int xPos = SprawdzXPosLufy();
@@ -119,16 +122,41 @@ void Plansza::ustawRakiete()
     plansza[yPos][xPos].jestRakieta = true;
 }
 
-void Plansza::strzelaj()
+int Plansza::znajdzRakiet(int y)
 {
-    int yPos=SprawdzYPosLufy();
-    int xPos=SprawdzXPosLufy()+1;
-    for(int i = SprawdzXPosLufy(); i>=0; --i)
+    int x = -1;
+    for(int i = 0; i < szerokosc; ++i)
     {
-        plansza[yPos][i].jestRakieta = true;
-        plansza[yPos][xPos].jestRakieta = false;
-        xPos--;
+        if(plansza[y][i].jestRakieta)
+        {
+            x = i;
+            break;
+        }
     }
+    return x;
+}
+
+void Plansza::przesunRakiet(int y)
+{
+    int x = znajdzRakiet(y);
+    if(x<0)
+        return;
+    if(y == 0)
+        return;
+    plansza[y-1][x].jestRakieta = true;
+}
+
+void Plansza::usunRakiet(int y)
+{
+    int x = znajdzRakiet(y);
+    if(x<0)
+        return;
+    plansza[y][x].jestRakieta = false;
+}
+void Plansza::cyklRakiet(int y)
+{
+    przesunRakiet(y);
+    usunRakiet(y);
 }
 
 void Plansza::wyswietl()

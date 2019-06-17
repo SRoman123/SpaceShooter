@@ -31,12 +31,17 @@ class Plansza
         Kierunek getKierunek();
         int SprawdzXPosLufy();
         int SprawdzYPosLufy();
+
         bool sprawdzZakres(int x, int y);
         Kierunek zmienKier(Kierunek k);
         void ruchL();
         void ruchP();
         void ustawRakiete();
-        void strzelaj();
+        int znajdzRakiet(int y);
+        void przesunRakiet(int y);
+        void usunRakiet(int y);
+        void cyklRakiet(int y);
+
 
         void wyswietl();
 
