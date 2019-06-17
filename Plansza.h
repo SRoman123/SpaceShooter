@@ -42,6 +42,11 @@ class Plansza
         void usunRakiet(int y);
         void cyklRakiet(int y);
 
+        void ustawObcych();
+        void przesunObcych(int y);
+        void usunObcych(int y);
+        void cyklObcych(int y);
+
 
         void wyswietl();
 

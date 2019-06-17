@@ -1,6 +1,7 @@
 #include "Plansza.h"
 #include <iostream>
 #include <unistd.h>
+#include <cstdlib>
 
 Plansza::Plansza(int szeroksc, int wysokosc, GameMode gameMode)
 {
@@ -22,6 +23,7 @@ Plansza::Plansza(int szeroksc, int wysokosc, GameMode gameMode)
     plansza[wysokosc-1][(szeroksc/2)-1].jestStatek = true;
     plansza[wysokosc-1][(szeroksc/2)+1].jestStatek = true;
     plansza[wysokosc-2][szeroksc/2].jestLufa = true;
+    ustawObcych();
 }
 
 int Plansza::getWysokosc()
@@ -155,8 +157,86 @@ void Plansza::usunRakiet(int y)
 }
 void Plansza::cyklRakiet(int y)
 {
+    if(y == SprawdzYPosLufy())
+        ustawRakiete();
     przesunRakiet(y);
     usunRakiet(y);
+}
+
+void Plansza::ustawObcych()
+{
+    int n;
+    int x;
+    if(gameMode == EASY)
+    {
+        n = 2*szerokosc/5;
+        for(int i = 0; i < n; ++i)
+        {
+            x = rand() % szerokosc;
+            plansza[0][x].jestObcy = true;
+        }
+    }
+    if(gameMode == NORMAL)
+    {
+        n = 3*szerokosc/5;
+        for(int i = 0; i < n; ++i)
+        {
+            x = rand() % szerokosc;
+            plansza[0][x].jestObcy = true;
+        }
+    }
+    if(gameMode == HARD)
+    {
+        n = 4*szerokosc/5;
+        for(int i = 0; i < n; ++i)
+        {
+            x = rand() % szerokosc;
+            plansza[0][x].jestObcy = true;
+        }
+    }
+    if(gameMode == DEBUG)
+    {
+        //n = 2*5/szerokosc;
+//        for(int i = 0; i < n; ++i)
+//        {
+//            x = rand() % szerokosc;
+//            plansza[0][x].jestObcy = true;
+//        }
+        plansza[0][1].jestObcy = true;
+        plansza[0][5].jestObcy = true;
+        plansza[0][9].jestObcy = true;
+    }
+}
+
+void Plansza::przesunObcych(int y)
+{
+    if(y >= wysokosc - 1)
+        return;
+    for(int i = 0; i < szerokosc; ++i)
+    {
+        if(plansza[y][i].jestObcy)
+            plansza[y+1][i].jestObcy = true;
+    }
+}
+
+void Plansza::usunObcych(int y)
+{
+    if(y >= wysokosc - 1)
+        return;
+    for(int i = 0; i < szerokosc; ++i)
+    {
+        if(plansza[y][i].jestObcy)
+            plansza[y][i].jestObcy = false;
+    }
+}
+
+void Plansza::cyklObcych(int y)
+{
+    //ustawObcych();
+    przesunObcych(y);
+    usunObcych(y);
+    if(y == 0)
+        ustawObcych();
 }
 
 void Plansza::wyswietl()
