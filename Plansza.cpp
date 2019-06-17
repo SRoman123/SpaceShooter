@@ -121,6 +121,8 @@ void Plansza::ustawRakiete()
 {
     int yPos=SprawdzYPosLufy();
     int xPos=SprawdzXPosLufy();
+    if(xPos < 0 || xPos >= szerokosc || yPos < 0 || yPos >= wysokosc)
+        return;
     plansza[yPos][xPos].jestRakieta = true;
 }
 
@@ -140,8 +142,10 @@ int Plansza::znajdzRakiet(int y)
 
 void Plansza::przesunRakiet(int y)
 {
+    if(y < 0 || y >= wysokosc)
+        return;
     int x = znajdzRakiet(y);
-    if(x<0)
+    if(x < 0 || x >= szerokosc)
         return;
     if(y == 0)
         return;
@@ -150,8 +154,10 @@ void Plansza::przesunRakiet(int y)
 
 void Plansza::usunRakiet(int y)
 {
+    if(y < 0 || y >= wysokosc)
+        return;
     int x = znajdzRakiet(y);
-    if(x<0)
+    if(x < 0 || x >= szerokosc)
         return;
     plansza[y][x].jestRakieta = false;
 }
@@ -210,8 +216,13 @@ void Plansza::ustawObcych()
 
 void Plansza::przesunObcych(int y)
 {
-    if(y >= wysokosc - 1)
+    if(y >= wysokosc || y < 0)
         return;
+    if(y == wysokosc -1)
+    {
+        gameState = FINISHED_LOSS;
+        return;
+    }
     for(int i = 0; i < szerokosc; ++i)
     {
         if(plansza[y][i].jestObcy)
@@ -221,7 +232,7 @@ void Plansza::przesunObcych(int y)
 
 void Plansza::usunObcych(int y)
 {
-    if(y >= wysokosc - 1)
+    if(y >= wysokosc || y < 0)
         return;
     for(int i = 0; i < szerokosc; ++i)
     {
@@ -237,6 +248,37 @@ void Plansza::cyklObcych(int y)
     usunObcych(y);
     if(y == 0)
         ustawObcych();
+}
+
+void Plansza::zrobZderzenie(int y, int x)
+{
+    if(x < 0 || x >= szerokosc || y < 0 || y >= wysokosc)
+        return;
+    plansza[y][x].jestObcy = false;
+    plansza[y][x].jestRakieta = false;
+}
+
+void Plansza::zderzenie(int y)
+{
+    int x = znajdzRakiet(y);
+    if(x < 0 || x >= szerokosc || y < 0 || y >= wysokosc)
+        return;
+    if(plansza[y][x].jestObcy && plansza[y][x].jestRakieta)
+        zrobZderzenie(y,x);
+}
+
+int Plansza::zliczObcych()
+{
+    int liczbaObcyh = 0;
+    for(int i = 0; i < wysokosc; ++i)
+    {
+        for(int j = 0; j < szerokosc; ++j)
+        {
+            if(plansza[i][j].jestObcy)
+                liczbaObcyh++;
+        }
+    }
+    return liczbaObcyh;
 }
 
 void Plansza::wyswietl()

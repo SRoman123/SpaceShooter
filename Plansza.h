@@ -47,6 +47,11 @@ class Plansza
         void usunObcych(int y);
         void cyklObcych(int y);
 
+        void zrobZderzenie(int y, int x);
+        void zderzenie(int y);
+
+        int zliczObcych();
+
 
         void wyswietl();
 
